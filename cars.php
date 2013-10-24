@@ -25,11 +25,36 @@
 	
 	<p>View our wide range of fabulous cars and low low prices, and quality. Ensure your car is only sold by a Boyd approved dealership.</p>
 	
+	<?php include('data/carData.php'); ?>
+	<?php require('classes/car.class.php'); ?>
 	
+	<?php 
+    //print_r($carData);
+    //$colour = $_GET['colour'];
+    //echo $colour."</br>"; 
+    $cars = array();
+
+    foreach($carData as $currentCar){
+      $newCar = new Car($currentCar["make"], $currentCar["model"], $currentCar["colour"], $currentCar["description"], $currentCar["price"], $currentCar["reg_number"], $currentCar["reg_year"]);
+      $cars[] = $newCar;
+    }
+    
+    if(isset($_GET['colour'])){
+      foreach($cars as $currentAdvert){
+        $currentColour = $currentAdvert->colour;
+        if($currentColour == $_GET['colour']){
+          $carAge = $currentAdvert->getAge();
+          echo ("We have a ".$currentAdvert->make." in the colour ".$currentAdvert->colour." for sale. It only costs £".$currentAdvert->price."!! it is ".$carAge." years old.<br/>");
+        }
+      }
+    }else{
+      echo "No colour was selected so no cars are displayed";
+    }
+    
+	?>
 	
-	<!-- DO NOT USE THIS UNTIL PART 2 -->
-	<!-- when told to, remove these comments -->
-	<!--
+	</p>
+
 	<div class="row">
 		<p class="col-md-2">Car Colour</p>
 		<form action="cars.php" method="GET">
@@ -46,7 +71,8 @@
 		
 		<p><a href="cars.php" class="btn btn-primary btn-sm col-md-offset-1">Reset Colour</a></p>
 	</div>
-	-->
+	
+
 	<!-- /part 2 code -->
 	
 	
